@@ -9,6 +9,7 @@ $lastBalance = $lastStatement ? $lastStatement->balance : 0;
 
 
 $setting = App\Models\Setting::find(1);
+$users = App\Models\User::count();
 
 
 @endphp
@@ -57,14 +58,14 @@ $setting = App\Models\Setting::find(1);
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
               <div class="card card-statistic-1">
                 <div class="card-icon bg-danger">
-                <i class="fas fa-solid fa-landmark"></i>
+                <i class="fas fa-key"></i>
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
                     <h4>Total Users</h4>
                   </div>
                   <div class="card-body">
-                  7565
+                  {{$users}}
                   </div>
                 </div>
               </div>

@@ -4,6 +4,11 @@
 @php 
  
  $setting = App\Models\Setting::find(1);
+
+ $lastStatement = App\Models\Statement::orderBy('id', 'desc')->first();
+$lastBalance = $lastStatement ? $lastStatement->balance : 0;
+
+
  @endphp 
 <style>
   td{
@@ -25,7 +30,7 @@
               <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>All Entries</h4>
+                <h4> <b>Balance: SL {{number_format($lastBalance,2)}}</b></h4>
                     <div class="card-header-action">
                     @if(Auth::user()->can('income.add'))
                     <button type="button" style="text-align: right;" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -56,7 +61,7 @@
                             <td>{{$item->description}}</td>
                             <td style="text-align: right;">
                             @if(Auth::user()->can('income.detail'))
-                                <a href="{{ route('income.detail',$item->id) }}" class="btn btn-success"><i class="fa fa-eye"></i> DETAILS</a>
+                                <a href="{{ route('income.detail',$item->uuid) }}" class="btn btn-success"><i class="fa fa-eye"></i> DETAILS</a>
                             @endif
                               </td>
                           </tr>

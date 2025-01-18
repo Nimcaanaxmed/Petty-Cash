@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Statement;
 use App\Models\Expense;
 use Carbon\Carbon;
+use Str;
 class ExpenseController extends Controller
 {
     public function ExpenseList(){
@@ -19,6 +20,7 @@ class ExpenseController extends Controller
         $lastStatement = Statement::orderBy('id', 'desc')->first();
         $lastBalance = $lastStatement ? $lastStatement->balance : 0;
       
+        $expenseUUID = Str::uuid()->toString();
     
         if ($request->amount > $lastBalance) {
             $notification = array(
@@ -29,24 +31,24 @@ class ExpenseController extends Controller
         }else{
              // Create a new expense record
         $expense = new Expense();
+        $expense->uuid = $expenseUUID;
         $expense->date = now()->format('Y-m-d');
         $expense->amount = $request->amount;
         $expense->description = $request->description;
         $expense->save();
         }
     
-        // // Fetch the last balance from the statements table
-        // $lastStatement = Statement::orderBy('id', 'desc')->first();
-        // $lastBalance = $lastStatement ? $lastStatement->balance : 0;
+        $expenseStatementUUID = Str::uuid()->toString();
     
         $newBalance = $lastBalance - $request->amount;
         // Create a new statement record
         $statement = new Statement();
+        $statement->uuid = $expenseStatementUUID;
         $statement->transaction_date = now()->format('Y-m-d');
-        $statement->transaction_description = 'Expense for '.$request->description;
+        $statement->transaction_description = $request->description;
         $statement->debit = $request->amount;
-        $statement->credit = 0; // Assuming no debit for fee payment
-        $statement->balance = $newBalance; // Update balance as new due amount
+        $statement->credit = 0; 
+        $statement->balance = $newBalance; 
         $statement->save();
     
         $notification = array(
@@ -57,8 +59,8 @@ class ExpenseController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function ExpenseDetail($id){
-        $details = Expense::findOrfail($id);
+    public function ExpenseDetail($uuid){
+        $details = Expense::where('uuid', $uuid)->firstOrFail();
         return view('expense.details',compact('details'));
     }
 

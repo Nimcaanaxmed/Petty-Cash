@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Statement;
 use App\Models\Income;
 use Carbon\Carbon;
-
+use Str;
 class IncomeController extends Controller
 {
     public function IncomeList(){
@@ -20,20 +20,23 @@ class IncomeController extends Controller
         $lastStatement = Statement::orderBy('id', 'desc')->first();
         $lastBalance = $lastStatement ? $lastStatement->balance : 0;
       
-    
+        $incomeUUID = Str::uuid()->toString();
         
              // Create a new Income record
         $income = new Income();
+        $income->uuid = $incomeUUID;
         $income->date = now()->format('Y-m-d');
         $income->amount = $request->amount;
         $income->description = $request->description;
         $income->save();
       
+        $statementUUID = Str::uuid()->toString();
         $newBalance = $lastBalance + $request->amount;
         // Create a new statement record
         $statement = new Statement();
+        $statement->uuid = $statementUUID;
         $statement->transaction_date = now()->format('Y-m-d');
-        $statement->transaction_description = 'Income for '.$request->description;
+        $statement->transaction_description = $request->description;
         $statement->credit = $request->amount;
         $statement->debit = 0; // Assuming no debit for fee payment
         $statement->balance = $newBalance; // Update balance as new due amount
@@ -47,8 +50,8 @@ class IncomeController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function IncomeDetail($id){
-        $details = Income::findOrfail($id);
+    public function IncomeDetail($uuid){
+        $details = Income::where('uuid', $uuid)->firstOrFail();
         return view('income.details',compact('details'));
     }
 

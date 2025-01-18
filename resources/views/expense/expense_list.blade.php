@@ -4,6 +4,15 @@
 @php 
  
  $setting = App\Models\Setting::find(1);
+
+
+
+
+$lastStatement = App\Models\Statement::orderBy('id', 'desc')->first();
+$lastBalance = $lastStatement ? $lastStatement->balance : 0;
+
+
+
  @endphp 
  <style>
   td{
@@ -13,7 +22,7 @@
 <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Debit</h1>
+            <h1>All Debits</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
               <div class="breadcrumb-item">Debit</div>
@@ -25,7 +34,7 @@
               <div class="col-12">
                 <div class="card">
                 <div class="card-header">
-                    <h4>All Debits</h4>
+                    <h4> <b>Balance: SL {{number_format($lastBalance,2)}}</b></h4>
                     <div class="card-header-action">
                     @if(Auth::user()->can('expense.add'))
                     <button type="button" style="text-align: right;" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -56,7 +65,7 @@
                             <td>{{$item->description}}</td>
                             <td style="text-align: right;">
                             @if(Auth::user()->can('expense.detail'))
-                                <a href="{{ route('expense.detail',$item->id) }}" class="btn btn-success"><i class="fa fa-eye"></i> DETAILS</a>
+                                <a href="{{ route('expense.detail',$item->uuid) }}" class="btn btn-success"><i class="fa fa-eye"></i> DETAILS</a>
                             @endif
                               </td>
                           </tr>

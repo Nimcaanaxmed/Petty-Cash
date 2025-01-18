@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('statements', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid')->unique()->default(Str::uuid());
             $table->string('transaction_date');
             $table->string('transaction_description');
             $table->string('credit');

@@ -158,7 +158,7 @@ Route::controller(ExpenseController::class)->group(function(){
 
     Route::get('/expense/list' , 'ExpenseList')->name('expense.list');
     Route::post('/expense/store' , 'ExpenseStore')->name('expense.store');
-    Route::get('/expense/detail/{id}' , 'ExpenseDetail')->name('expense.detail');
+    Route::get('/expense/detail/{uuid}' , 'ExpenseDetail')->name('expense.detail');
     Route::post('/expense/update/{id}' , 'ExpenseUpdate')->name('expense.update');
     Route::get('/expense/delete/{id}' , 'ExpenseDelete')->name('expense.delete');
 
@@ -169,7 +169,7 @@ Route::controller(IncomeController::class)->group(function(){
 
     Route::get('/income/list' , 'IncomeList')->name('income.list');
     Route::post('/income/store' , 'IncomeStore')->name('income.store');
-    Route::get('/income/detail/{id}' , 'IncomeDetail')->name('income.detail');
+    Route::get('/income/detail/{uuid}' , 'IncomeDetail')->name('income.detail');
     Route::post('/income/update/{id}' , 'IncomeUpdate')->name('income.update');
     Route::get('/income/delete/{id}' , 'IncomeDelete')->name('income.delete');
 

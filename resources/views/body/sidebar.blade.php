@@ -19,7 +19,7 @@
 
                 <li class="{{ ($route == 'expense.list')?'active':'' }}"><a class="nav-link" href="{{route('expense.list')}}">Debit</a></li>
 
-                <li class="{{ ($route == 'statement.view')?'active':'' }}"><a class="nav-link" href="{{route('statement.view')}}">Transaction Statements</a></li>
+                <li class="{{ ($route == 'statement.view')?'active':'' }}"><a class="nav-link" href="{{route('statement.view')}}">Statements</a></li>
              
               </ul>
             </li>
