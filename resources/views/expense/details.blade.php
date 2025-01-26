@@ -3,6 +3,7 @@
 
 @php
 $setting = App\Models\Setting::find(1);
+$today = date('Y-m-d');
 @endphp
 
 
@@ -24,12 +25,14 @@ $setting = App\Models\Setting::find(1);
           <h4>Debit Details</h4>
                     <div class="card-header-action">
                     <div class="btn-group">
+                @if($details->date == $today)
                     @if(Auth::user()->can('expense.edit'))
                         <a href="" class="btn btn-success" data-toggle="modal" id="{{ $details->id }}" data-target="#exampleModal{{$details->id}}" ><i class="fas fa-edit"></i> EDIT </a>
                         @endif
                         @if(Auth::user()->can('expense.delete'))
                         <a href="{{ route('expense.delete',$details->id) }}" id="cancel" class="btn btn-danger"><i class="fas fa-trash"></i> DELETE</a>
                     @endif
+                @endif
                     </div>
                    
                     </div>

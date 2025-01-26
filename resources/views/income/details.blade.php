@@ -3,8 +3,8 @@
 
 @php
 $setting = App\Models\Setting::find(1);
+$today = date('Y-m-d');
 @endphp
-
 
      <div class="main-content">
         <section class="section">
@@ -24,12 +24,14 @@ $setting = App\Models\Setting::find(1);
           <h4>Credit Details</h4>
                     <div class="card-header-action">
                     <div class="btn-group">
+                  @if($details->date == $today)
                     @if(Auth::user()->can('income.edit'))
                         <a href="" class="btn btn-success" data-toggle="modal" id="{{ $details->id }}" data-target="#exampleModal{{$details->id}}" ><i class="fas fa-edit"></i> EDIT </a>
-                        @endif
+                    @endif
                         @if(Auth::user()->can('income.delete'))
                         <a href="{{ route('income.delete',$details->id) }}" id="delete" class="btn btn-danger"><i class="fas fa-trash"></i> DELETE</a>
                     @endif
+                  @endif
                     </div>
                    
                     </div>
